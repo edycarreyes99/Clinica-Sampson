@@ -7,10 +7,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 // Custom modules
 import {MaterialDesignModule} from './modules/material-design/material-design.module';
+import { LoginComponent } from './views/login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

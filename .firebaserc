@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "clinica-sampson": {
+      "hosting": {
+        "Clinica-Sampson": [
+          "clinica-sampson"
+        ]
+      }
+    }
+  }
+}

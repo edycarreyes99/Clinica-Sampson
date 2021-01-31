@@ -11,8 +11,36 @@
         </div>
       </div>
 
-      <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+      <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 bg-light" style="min-height: 100vh;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 100%">
+          <form [formGroup]="loginForm" class="shadow-lg p-5 mb-5 bg-white rounded w-50" [action]="doLogin()">
+            <span class="mat-title mb-4">Iniciar sesión</span>
+            <mat-form-field appearance="outline" class="w-100 mt-4">
+              <label for="email"></label>
+              <mat-label>Ingrese su correo electrónico</mat-label>
+              <input matInput formControlName="email" id="email" type="email">
+              <mat-error *ngIf="getFormControl('email')?.hasError('required')">
+                * El email es requerido
+              </mat-error>
+              <mat-error *ngIf="getFormControl('email')?.hasError('email')">
+                * El email debe de tener un formato válido
+              </mat-error>
+            </mat-form-field>
 
+            <mat-form-field appearance="outline" class="w-100">
+              <label for="password"></label>
+              <mat-label>Ingrese su contraseña</mat-label>
+              <input matInput formControlName="password" id="password" type="password">
+              <mat-error *ngIf="getFormControl('password')?.hasError('required')">
+                * La contraseña es requerida.
+              </mat-error>
+            </mat-form-field>
+
+            <div class="actions w-100 d-flex justify-content-end">
+              <button type="button" mat-stroked-button (click)="doLogin()" class="ml-auto mt-1">Ingresar</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

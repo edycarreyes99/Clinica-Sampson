@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // Custom modules
 import {MaterialDesignModule} from './modules/material-design/material-design.module';
 import { LoginComponent } from './views/login/login.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LoginComponent } from './views/login/login.component';
     BrowserAnimationsModule,
 
     // Custom Modules
-    MaterialDesignModule
+    MaterialDesignModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

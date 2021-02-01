@@ -87,3 +87,11 @@ span.active, .clock-face__clock-hand {
 .min-h-full-mt-5 {
   min-height: calc(100vh - 7rem) !important;
 }
+
+.min-h-90 {
+  min-height: calc(90vh - 3rem) !important;
+}
+
+.min-h-90-mt-5 {
+  min-height: calc(90vh - 7rem) !important;
+}

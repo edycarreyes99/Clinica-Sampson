@@ -1,5 +1,20 @@
 <div class="patients-table-component">
-  <mat-card class="shadow" id="patients-table" *ngIf="!loadingPatients">
+
+  <!-- Patients table empty section -->
+  <div class="d-flex flex-column justify-content-center align-items-center min-h-90-mt-5"
+       *ngIf="patientTableDataSource.data.length === 0">
+    <img src="../../../../assets/images/EmptyIllustration.svg" alt="EmptyIllustration" width="400">
+    <div class="span mat-title">
+      Usted aún no tiene ningun paciente. ¡Agregue uno dando click en el botón de abajo!.
+    </div>
+    <button class="m-2 float-right" mat-stroked-button matTooltip="Agregar nuevo paciente al archivo"
+            (click)="openModal('agregar-encuesta')">Agregar Paciente
+    </button>
+  </div>
+  <!-- Ends Patients table empty section -->
+
+  <!-- Patients table section -->
+  <mat-card class="shadow" id="patients-table" *ngIf="!loadingPatients && patientTableDataSource.data.length !== 0">
     <mat-card-title>
       <div class="row">
         <div class="col-sm-8 col-md-8 col-lg-8">
@@ -180,6 +195,7 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </mat-card-content>
   </mat-card>
+  <!-- Ends Patients table section -->
 
   <!-- Loading animation -->
   <app-loading *ngIf="loadingPatients"></app-loading>

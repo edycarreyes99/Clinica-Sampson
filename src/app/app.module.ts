@@ -25,12 +25,14 @@ import {environment} from '../environments/environment';
 // Custom components
 import {LoginViewComponent} from './views/login-view/login-view.component';
 import {PatientsViewComponent} from './views/patients-view/patients-view.component';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginViewComponent,
-    PatientsViewComponent
+    PatientsViewComponent,
+    SideNavComponent
   ],
   imports: [
     BrowserModule,

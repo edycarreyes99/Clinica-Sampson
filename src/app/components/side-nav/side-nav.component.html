@@ -1,0 +1,44 @@
+<div class="sidenav-component">
+  <mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="sidePanelOpen bounceIn bg-light" id="sidenavPanel" mode="side"
+                [opened]='sidenavOpen'>
+      <div class="mx-auto">
+        <div class="container text-center d-block">
+          <img src="../../../assets/images/ClinicaSampsonLogo.svg" alt="Avatar" class="mx-auto avatar mt-4">
+          <div class="text-secondary mt-2">
+            {{nameToShow}} {{userRole}}
+          </div>
+        </div>
+      </div>
+      <mat-list class="pt-2 text-center align-middle">
+        <a matTooltip="Pacientes" class="onHover mx-auto" mat-list-item style="text-decoration: none;"
+           (click)="navigate('/')" routerLinkActive="active active-text">
+          <i matListIcon class="mx-auto text-secondary material-icons" routerLinkActive="active-text">face</i>
+          <h3 matLine class="text-secondary" routerLinkActive="active-text"> Pacientes </h3>
+        </a>
+        <a matTooltip="Usuarios" class="onHover mx-auto" mat-list-item style="text-decoration: none;"
+           (click)="navigate('users')" routerLinkActive="active">
+          <i matListIcon class="mx-auto text-secondary material-icons" routerLinkActive="activate-text">group</i>
+          <h3 matLine class="text-secondary" routerLinkActive="active-text"> Usuarios </h3>
+        </a>
+        <a matTooltip="Mi cuenta" class="onHover mx-auto" mat-list-item style="text-decoration: none;"
+           (click)="navigate('my-account')" routerLinkActive="active">
+          <i matListIcon class="mx-auto text-secondary material-icons" routerLinkActive="active-text">manage_accounts</i>
+          <h3 matLine class="text-secondary" routerLinkActive="active-text"> Mi cuenta </h3>
+        </a>
+      </mat-list>
+    </mat-drawer>
+    <mat-drawer-content class="example-sidenav-content">
+      <mat-toolbar *ngIf="showNavbar" class="bg-light">
+        <button class="mr-2" mat-icon-button matTooltip="Abrir/Cerrar SideNav" (click)="toggleSidenav()">
+          <mat-icon class="text-secondary">menu</mat-icon>
+        </button>
+        <span class="text-secondary">{{title}}</span>
+        <span class="ml-auto text-secondary">{{dateTime}}</span>
+        <button mat-flat-button class="bg-light ml-auto text-dark" (click)="logout()">Cerrar Sesión</button>
+      </mat-toolbar>
+
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

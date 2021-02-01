@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {IndividualConfig, ToastrService} from 'ngx-toastr';
 import {ERROR_TOAST, SUCCESS_TOAST} from '../consts/ToastConsts';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import {ERROR_TOAST, SUCCESS_TOAST} from '../consts/ToastConsts';
 export class GlobalService {
 
   constructor(
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router
   ) {
   }
 
@@ -26,5 +28,12 @@ export class GlobalService {
     } else if (type === ERROR_TOAST) {
       this.toast.error(`${message}`, `${title}`, toastSettings);
     }
+  }
+
+  // Method to navigate to other routes
+  async navigate(ruta: string, params?: any): Promise<boolean> {
+    return this.router.navigate([`/${ruta}`], {
+      queryParams: params ? params : {}
+    });
   }
 }

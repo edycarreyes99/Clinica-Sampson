@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import firebase from 'firebase';
 import {CURRENT_USER_LOCALSTORAGE} from '../consts/AuthConsts';
+import {GlobalService} from './global.service';
+import {ERROR_TOAST, SUCCESS_TOAST} from "../consts/ToastConsts";
 import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
@@ -10,7 +12,8 @@ import UserCredential = firebase.auth.UserCredential;
 export class AuthService {
 
   constructor(
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private globalService: GlobalService
   ) {
   }
 
@@ -51,6 +54,20 @@ export class AuthService {
       } else {
         rejects(null);
       }
+    });
+  }
+
+  // Method to logout
+  async logout(): Promise<boolean> {
+    return new Promise(async (resolve, rejects) => {
+      await this.auth.signOut().then((user) => {
+        console.log('Goodbye!');
+        this.globalService.showToast(SUCCESS_TOAST, 'Cierre de sesión correcto', '¡Vuelva pronto!');
+      }).catch((error) => {
+        console.error('Error doing logout:', error);
+        this.globalService.showToast(ERROR_TOAST, 'Error al cerrar sesión', error.toString());
+        rejects(false);
+      });
     });
   }
 }

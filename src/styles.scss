@@ -79,3 +79,11 @@ span.active, .clock-face__clock-hand {
 .timepicker-button {
   color: #3f51b5 !important;
 }
+
+.min-h-full {
+  min-height: calc(100vh - 3rem) !important;
+}
+
+.min-h-full-mt-5 {
+  min-height: calc(100vh - 7rem) !important;
+}

@@ -34,6 +34,7 @@ export class PatientsTableComponent implements OnInit {
     'Acciones'
   ];
   patientsCollection: AngularFirestoreCollection<Patient> = this.fs.collection<Patient>(PATIENTS_DB_REF);
+  loadingPatients = true;
 
   // ViewChild Components
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -49,6 +50,7 @@ export class PatientsTableComponent implements OnInit {
       this.patientsCollection.valueChanges().subscribe((patients) => {
         this.patientTableDataSource = new MatTableDataSource<Patient>(patients);
         this.applyFilter('');
+        this.loadingPatients = false;
       });
     });
   }

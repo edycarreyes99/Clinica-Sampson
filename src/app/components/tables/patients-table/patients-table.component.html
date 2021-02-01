@@ -1,5 +1,5 @@
 <div class="patients-table-component">
-  <mat-card class="shadow" id="patients-table">
+  <mat-card class="shadow" id="patients-table" *ngIf="!loadingPatients">
     <mat-card-title>
       <div class="row">
         <div class="col-sm-8 col-md-8 col-lg-8">
@@ -180,4 +180,8 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </mat-card-content>
   </mat-card>
+
+  <!-- Loading animation -->
+  <app-loading *ngIf="loadingPatients"></app-loading>
+  <!-- Ends loading animation -->
 </div>

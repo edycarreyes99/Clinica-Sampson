@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {GlobalService} from '../../services/global.service';
 import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-side-nav',
@@ -35,13 +35,31 @@ export class SideNavComponent implements OnInit {
     public afAuth: AngularFireAuth,
     public globalService: GlobalService,
     public authService: AuthService,
-    public router: Router
+    public router: Router,
+    public route: ActivatedRoute
   ) {
     // en el momento que el componente se construye se manda a llamar a la funcion para extraer la fecha y la hora
     this.extractDateTime();
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe((events) => {
+      if (events instanceof NavigationEnd) {
+        console.log('Navigation ended and updated the path');
+        this.route.params.subscribe(async (params) => {
+          console.log('Params are:', params);
+          await this.authService.getCurrentUser().then((user) => {
+            // tslint:disable-next-line:no-non-null-assertion
+            this.nameToShow = user.user?.displayName?.toString()!;
+          }).catch((error) => {
+            console.error('Error getting user from localstorage', error);
+          });
+        });
+        console.log('Current children is:', this.route.snapshot.children[0].data.slug);
+
+        this.title = this.route.snapshot.children[0].data.slug;
+      }
+    });
   }
 
   // funcion para abrir o cerrar el sidenav
@@ -50,8 +68,8 @@ export class SideNavComponent implements OnInit {
   }
 
   // funcion que se ejecutara cada vez que se desee realizar una navegacion entre las rutas de la plataforma
-  navigate(ruta: string): void {
-    this.globalService.navigate(ruta);
+  async navigate(ruta: string): Promise<boolean> {
+    return this.globalService.navigate(ruta);
   }
 
   // funcion para extraer la fecha y la hora a cada segundo

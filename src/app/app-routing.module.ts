@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginViewComponent,
     data: {
-      slug: 'Inicio de sesión'
+      slug: 'Login'
     },
     canActivate: [NoAuthenticatedGuard]
   },

@@ -30,11 +30,14 @@ export class PatientFormViewComponent implements OnInit {
     this.patchPatientForm();
     this.route.params.subscribe(async (params) => {
       console.log('Patient params are:', params);
-      if (params.patientID) {
+      if (params.patientID && params.patientID !== 'add') {
+
         this.patientID = params.patientID;
 
         await this.fs.collection(PATIENTS_DB_REF).doc<IPatient>(this.patientID).snapshotChanges().subscribe((patient) => {
           this.patchPatientForm(patient.payload.data());
+        }, error => {
+          console.error('Error getting patients from database:', error);
         });
       } else {
         this.patchPatientForm();
@@ -53,28 +56,37 @@ export class PatientFormViewComponent implements OnInit {
   // Method to save a patient
   async savePatient(): Promise<boolean> {
     if (this.savingPatient) {
+      console.warn('A patient is saving now.');
       return false;
     }
 
     if (!this.patientForm.valid) {
+      console.warn('The form is not valid.');
+      console.error(this.patientForm.value);
       return false;
     }
 
+    this.savingPatient = true;
+
+    console.warn('Saving patient');
+
     return new Promise(async (resolve, rejects) => {
-      await this.fs.collection(PATIENTS_DB_REF).doc(this.patientForm.get('PatientID').value).set(
-        this.patientForm.value
-      ).then((patientStored) => {
-        console.log('Patient', this.patientForm.get('Nombres'), this.patientForm.get('Apellidos'), 'saved to database correctly !');
-        this.globalService.showToast(SUCCESS_TOAST, 'Paciente guardado correctamente',
-          `El paciente ${this.patientForm.get('Nombres')} ${this.patientForm.get('Apellidos')} se ha guardado correctamente a la base de datos.`);
-        this.savingPatient = false;
-        resolve(true);
-      }).catch((error) => {
-        console.error('Error storing patient to database:', error);
-        this.globalService.showToast(ERROR_TOAST, 'Error al guardar paciente', error.toString());
-        this.savingPatient = false;
-        rejects(false);
-      });
+
+      await this.fs.collection(PATIENTS_DB_REF)
+        .doc(this.patientForm.get('PatientID').value).set(
+          this.patientForm.value
+        ).then((patientStored) => {
+          console.log('Patient', this.patientForm.get('Nombres').value, this.patientForm.get('Apellidos').value, 'saved to database correctly !');
+          this.globalService.showToast(SUCCESS_TOAST, 'Paciente guardado correctamente',
+            `El paciente ${this.patientForm.get('Nombres').value} ${this.patientForm.get('Apellidos').value} se ha guardado correctamente a la base de datos.`);
+          this.savingPatient = false;
+          resolve(true);
+        }).catch((error) => {
+          console.error('Error storing patient to database:', error);
+          this.globalService.showToast(ERROR_TOAST, 'Error al guardar paciente', error.toString());
+          this.savingPatient = false;
+          rejects(false);
+        });
     });
   }
 

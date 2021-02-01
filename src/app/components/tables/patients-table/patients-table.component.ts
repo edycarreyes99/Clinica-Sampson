@@ -91,4 +91,9 @@ export class PatientsTableComponent implements OnInit {
   showPatient(patientID: string | number): void {
 
   }
+
+  // Method to navigate to another view
+  navigate(route: string): Promise<boolean> {
+    return this.globalService.navigate(route);
+  }
 }

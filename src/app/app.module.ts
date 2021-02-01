@@ -30,6 +30,7 @@ import {SideNavComponent} from './components/side-nav/side-nav.component';
 import {NavBarComponent} from './components/nav-bar/nav-bar.component';
 import {PatientsTableComponent} from './components/tables/patients-table/patients-table.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { PatientFormViewComponent } from './views/patient-form-view/patient-form-view.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     SideNavComponent,
     NavBarComponent,
     PatientsTableComponent,
-    LoadingComponent
+    LoadingComponent,
+    PatientFormViewComponent
   ],
   imports: [
     BrowserModule,

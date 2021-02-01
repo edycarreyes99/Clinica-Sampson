@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatFormFieldAppearance} from '@angular/material/form-field';
+import {ActivatedRoute} from '@angular/router';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {PATIENTS_DB_REF} from '../../consts/DatabaseConsts';
+import {IPatient} from '../../interfaces/ipatient';
 
 @Component({
   selector: 'app-patient-form-view',
@@ -13,70 +17,23 @@ export class PatientFormViewComponent implements OnInit {
   patientForm: FormGroup;
   formFieldAppearance: MatFormFieldAppearance = 'outline';
   tableFormFieldAppearance: MatFormFieldAppearance = 'legacy';
+  patientID: string;
 
-  constructor() {
-    this.patientForm = new FormGroup({
-      // 1- Datos generales
-      NumeroExpediente: new FormControl('', [Validators.required]),
-      Nombres: new FormControl('', [Validators.required]),
-      Apellidos: new FormControl('', [Validators.required]),
-      FechaIngreso: new FormControl(new Date(), [Validators.required]),
-      Edad: new FormControl(null, [Validators.required]),
-      Sexo: new FormControl('', [Validators.required]),
-      Nacionalidad: new FormControl('', [Validators.required]),
-      Departamento: new FormControl('', [Validators.required]),
-      Municipio: new FormControl('', [Validators.required]),
-      TelefonoCasa: new FormControl('', []),
-      TelefonoOficina: new FormControl('', []),
-      TelefonoCelular: new FormControl('', []),
-      NumeroHijos: new FormControl('', []),
-      Email: new FormControl('', [Validators.email]),
-      Fax: new FormControl('', []),
-      DireccionCasa: new FormControl('', []),
-      DireccionTrabajo: new FormControl('', []),
+  constructor(
+    private route: ActivatedRoute,
+    private fs: AngularFirestore
+  ) {
+    this.route.params.subscribe(async (params) => {
+      console.log('Patient params are:', params);
+      if (params.patientID) {
+        this.patientID = params.patientID;
 
-      // 2- Motivo de la consulta
-      MotivoConsulta: new FormControl('', []),
-
-      // 3- Examen Clínico
-      AgudezaVisualOjoDerecho: new FormControl(null, []),
-      AgudezaVisualOjoIzquierdo: new FormControl(null, []),
-      SinLentesOjoDerecho: new FormControl(null, []),
-      SinLentesOjoIzquierdo: new FormControl(null, []),
-      ConLentesOjoDerecho: new FormControl(null, []),
-      ConLentesOjoIzquierdo: new FormControl(null, []),
-      EstenopeicoOjoDerecho: new FormControl(null, []),
-      EstenopeicoOjoIzquierdo: new FormControl(null, []),
-
-      RefraccionOjoDerecho: new FormControl(null, []),
-      RefraccionOjoIzquierdo: new FormControl(null, []),
-      SKDinamicaOjoDerecho: new FormControl(null, []),
-      SKDinamicaOjoIzquierdo: new FormControl(null, []),
-      SKCiclopegicaOjoDerecho: new FormControl(null, []),
-      SKCiclopegicaOjoIzquierdo: new FormControl(null, []),
-
-      PrescripcionOjoDerecho: new FormControl(null, []),
-      PrescripcionOjoIzquierdo: new FormControl(null, []),
-      EsferaOjoDerecho: new FormControl(null, []),
-      EsferaOjoIzquierdo: new FormControl(null, []),
-      CilindroOjoDerecho: new FormControl(null, []),
-      CilindroOjoIzquierdo: new FormControl(null, []),
-      EjesOjoDerecho: new FormControl(null, []),
-      EjesOjoIzquierdo: new FormControl(null, []),
-      DPOjoDerecho: new FormControl(null, []),
-      ADDOjoIzquierdo: new FormControl(null, []),
-
-      // 4- Lámpara de hendidura
-      LamparaDeEndidura: new FormControl('', []),
-
-      // 5- Fondo de ojo
-      FondoDeOjo: new FormControl('', []),
-
-      // 6- Presión intra ocular
-      PresionIntraOcular: new FormControl('', []),
-
-      // 7- Movilidad ocular
-      MotilidadOcular: new FormControl('', []),
+        await this.fs.collection(PATIENTS_DB_REF).doc<IPatient>(this.patientID).snapshotChanges().subscribe((patient) => {
+          this.patchPatientForm(patient.payload.data());
+        });
+      } else {
+        this.patchPatientForm();
+      }
     });
   }
 
@@ -86,5 +43,64 @@ export class PatientFormViewComponent implements OnInit {
   // Method to get the form control value
   getFormControl(formControlName: string): AbstractControl | null {
     return this.patientForm.get(formControlName);
+  }
+
+  // Method to patch the values in the patient form
+  patchPatientForm(patient?: IPatient): void {
+    this.patientForm = new FormGroup({
+      PatientID: new FormControl(this.patientID ? this.patientID : this.fs.createId(), [Validators.required]),
+
+      // 1- Datos generales
+      NumeroExpediente: new FormControl(patient ? patient.NumeroExpediente : '', [Validators.required]),
+      Nombres: new FormControl(patient ? patient.Nombres : '', [Validators.required]),
+      Apellidos: new FormControl(patient ? patient.Apellidos : '', [Validators.required]),
+      Edad: new FormControl(patient ? patient.Edad : null, [Validators.required]),
+      Telefono: new FormControl(patient ? patient.Telefono : '', []),
+      Email: new FormControl(patient ? patient.Email : '', [Validators.email]),
+      DireccionCasa: new FormControl(patient ? patient.DireccionCasa : '', []),
+
+      // 2- Motivo de la consulta
+      MotivoConsulta: new FormControl(patient ? patient.MotivoConsulta : '', []),
+
+      // 3- Examen Clínico
+      AgudezaVisualOjoDerecho: new FormControl(patient ? patient.AgudezaVisualOjoDerecho : null, []),
+      AgudezaVisualOjoIzquierdo: new FormControl(patient ? patient.AgudezaVisualOjoIzquierdo : null, []),
+      SinLentesOjoDerecho: new FormControl(patient ? patient.SinLentesOjoDerecho : null, []),
+      SinLentesOjoIzquierdo: new FormControl(patient ? patient.SinLentesOjoIzquierdo : null, []),
+      ConLentesOjoDerecho: new FormControl(patient ? patient.ConLentesOjoDerecho : null, []),
+      ConLentesOjoIzquierdo: new FormControl(patient ? patient.ConLentesOjoIzquierdo : null, []),
+      EstenopeicoOjoDerecho: new FormControl(patient ? patient.EstenopeicoOjoDerecho : null, []),
+      EstenopeicoOjoIzquierdo: new FormControl(patient ? patient.EstenopeicoOjoIzquierdo : null, []),
+
+      RefraccionOjoDerecho: new FormControl(patient ? patient.RefraccionOjoDerecho : null, []),
+      RefraccionOjoIzquierdo: new FormControl(patient ? patient.RefraccionOjoIzquierdo : null, []),
+      SKDinamicaOjoDerecho: new FormControl(patient ? patient.SKDinamicaOjoDerecho : null, []),
+      SKDinamicaOjoIzquierdo: new FormControl(patient ? patient.SKDinamicaOjoIzquierdo : null, []),
+      SKCiclopegicaOjoDerecho: new FormControl(patient ? patient.SKCiclopegicaOjoDerecho : null, []),
+      SKCiclopegicaOjoIzquierdo: new FormControl(patient ? patient.SKCiclopegicaOjoIzquierdo : null, []),
+
+      PrescripcionOjoDerecho: new FormControl(patient ? patient.PrescripcionOjoDerecho : null, []),
+      PrescripcionOjoIzquierdo: new FormControl(patient ? patient.PrescripcionOjoIzquierdo : null, []),
+      EsferaOjoDerecho: new FormControl(patient ? patient.EsferaOjoDerecho : null, []),
+      EsferaOjoIzquierdo: new FormControl(patient ? patient.EsferaOjoIzquierdo : null, []),
+      CilindroOjoDerecho: new FormControl(patient ? patient.CilindroOjoDerecho : null, []),
+      CilindroOjoIzquierdo: new FormControl(patient ? patient.CilindroOjoIzquierdo : null, []),
+      EjesOjoDerecho: new FormControl(patient ? patient.EjesOjoDerecho : null, []),
+      EjesOjoIzquierdo: new FormControl(patient ? patient.EjesOjoIzquierdo : null, []),
+      DPOjoDerecho: new FormControl(patient ? patient.DPOjoDerecho : null, []),
+      ADDOjoIzquierdo: new FormControl(patient ? patient.ADDOjoIzquierdo : null, []),
+
+      // 4- Lámpara de hendidura
+      LamparaDeEndidura: new FormControl(patient ? patient.LamparaDeEndidura : '', []),
+
+      // 5- Fondo de ojo
+      FondoDeOjo: new FormControl(patient ? patient.FondoDeOjo : '', []),
+
+      // 6- Presión intra ocular
+      PresionIntraOcular: new FormControl(patient ? patient.PresionIntraOcular : '', []),
+
+      // 7- Movilidad ocular
+      MotilidadOcular: new FormControl(patient ? patient.MotilidadOcular : '', []),
+    });
   }
 }

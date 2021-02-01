@@ -93,72 +93,12 @@
           </td>
         </ng-container>
 
-        <!-- Sexo Column -->
-        <ng-container matColumnDef="Sexo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Sexo</th>
+        <!-- Telefono Column -->
+        <ng-container matColumnDef="Telefono">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono</th>
           <td mat-cell *matCellDef="let patient">
             <div class="mr-3">
-              {{patient.Sexo ? patient.Sexo : '-'}}
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- FechaIngreso Column -->
-        <ng-container matColumnDef="FechaIngreso">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Ingreso</th>
-          <td mat-cell *matCellDef="let patient">
-            <div class="mr-3">
-              {{patient.FechaIngreso ? globalService.printFirestoreTimestamp(patient.FechaIngreso) : '-'}}
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- TelefonoCasa Column -->
-        <ng-container matColumnDef="TelefonoCasa">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono (casa)</th>
-          <td mat-cell *matCellDef="let patient">
-            <div class="mr-3">
-              {{patient.TelefonoCasa ? patient.TelefonoCasa : '-'}}
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- TelefonoOficina Column -->
-        <ng-container matColumnDef="TelefonoOficina">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono (oficina)</th>
-          <td mat-cell *matCellDef="let patient">
-            <div class="mr-3">
-              {{patient.TelefonoOficina ? patient.TelefonoOficina : '-'}}
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- TelefonoCelular Column -->
-        <ng-container matColumnDef="TelefonoCelular">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono (celular)</th>
-          <td mat-cell *matCellDef="let patient">
-            <div class="mr-3">
-              {{patient.TelefonoCelular ? patient.TelefonoCelular : '-'}}
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- Departamento Column -->
-        <ng-container matColumnDef="Departamento">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento</th>
-          <td mat-cell *matCellDef="let patient">
-            <div class="mr-3">
-              {{patient.Departamento ? patient.Departamento : '-'}}
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- Municipio Column -->
-        <ng-container matColumnDef="Municipio">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipio</th>
-          <td mat-cell *matCellDef="let patient">
-            <div class="mr-3">
-              {{patient.Municipio ? patient.Municipio : '-'}}
+              {{patient.Telefono ? patient.Telefono : '-'}}
             </div>
           </td>
         </ng-container>

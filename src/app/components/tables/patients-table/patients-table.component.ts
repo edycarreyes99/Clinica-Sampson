@@ -24,13 +24,7 @@ export class PatientsTableComponent implements OnInit {
     'Apellidos',
     'Email',
     'Edad',
-    'Sexo',
-    'FechaIngreso',
-    'TelefonoCasa',
-    'TelefonoOficina',
-    'TelefonoCelular',
-    'Departamento',
-    'Municipio',
+    'Telefono',
     'Acciones'
   ];
   patientsCollection: AngularFirestoreCollection<Patient> = this.fs.collection<Patient>(PATIENTS_DB_REF);

@@ -1,22 +1,12 @@
 export interface IPatient {
+  PatientID?: string;
   NumeroExpediente?: number | string;
   Nombres?: string;
   Apellidos?: string;
-  FechaIngreso?: Date;
-  DireccionTrabajo?: string;
   DireccionCasa?: string;
   Edad?: number;
-  TelefonoCasa?: string;
-  Sexo?: string;
-  TelefonoOficina?: string;
-  EstadoCivil?: string;
-  TelefonoCelular?: string;
-  NumeroHijos?: number;
-  Fax?: string;
-  Nacionalidad?: string;
+  Telefono?: string;
   Email?: string;
-  Departamento?: string;
-  Municipio?: string;
 
   MotivoConsulta?: string;
 

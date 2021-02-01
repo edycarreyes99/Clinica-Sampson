@@ -32,7 +32,7 @@
             1- Datos Generales
           </div>
           <button class="m-2" mat-stroked-button matTooltip="Guardar el expediente para dicho paciente"
-                  (click)="null">Guardar Expediente
+                  (click)="saveProceeding">Guardar Expediente
           </button>
         </div>
         <div class="row">
@@ -79,23 +79,6 @@
           </div>
           <!-- Ends Apellidos FormField -->
 
-          <!-- Fecha Ingreso FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;"
-                            (click)="datePicker.open()">
-              <label for="FechaIngreso"></label>
-              <mat-label>Fecha de ingreso</mat-label>
-              <mat-icon matSuffix>calendar_today</mat-icon>
-              <input matInput [matDatepicker]="datePicker" placeholder="Seleccione una fecha" readonly
-                     id="FechaIngreso" formControlName="FechaIngreso">
-              <mat-datepicker touchUi #datePicker></mat-datepicker>
-              <mat-error *ngIf="getFormControl('FechaIngreso')?.hasError('required')">
-                * La fecha de ingreso del paciente es requerida.
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <!-- Ends Fecha Ingreso FormField -->
-
           <!-- Edad FormField -->
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
@@ -110,106 +93,16 @@
           </div>
           <!-- Ends Edad FormField -->
 
-          <!-- Sexo FormField -->
+          <!-- Telefono FormField -->
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <mat-label>Sexo</mat-label>
-              <mat-select formControlName="Sexo" id="Sexo" placeholder="Seleccione el sexo del paciente">
-                <mat-option value="Femenino">Femenino</mat-option>
-                <mat-option value="Masculino">Masculino</mat-option>
-              </mat-select>
-              <mat-error *ngIf="getFormControl('Sexo')?.hasError('required')">
-                * El Sexo del paciente es requerido.
-              </mat-error>
+              <label for="Telefono"></label>
+              <mat-label>Teléfono</mat-label>
+              <input matInput formControlName="Telefono" id="Telefono" type="text"
+                     placeholder="Ingrese el teléfono del paciente">
             </mat-form-field>
           </div>
-          <!-- Ends Sexo FormField -->
-
-          <!-- Nacionalidad FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="Nacionalidad"></label>
-              <mat-label>Nacionalidad</mat-label>
-              <input matInput formControlName="Nacionalidad" id="Nacionalidad" type="text"
-                     placeholder="Ingrese la Nacionalidad del paciente">
-              <mat-error *ngIf="getFormControl('Nacionalidad')?.hasError('required')">
-                * La Nacionalidad del paciente es requerido.
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <!-- Ends Nacionalidad FormField -->
-
-          <!-- Departamento FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="Departamento"></label>
-              <mat-label>Departamento</mat-label>
-              <input matInput formControlName="Departamento" id="Departamento" type="text"
-                     placeholder="Ingrese el Departamento de residencia del paciente">
-              <mat-error *ngIf="getFormControl('Departamento')?.hasError('required')">
-                * El Departamento de residencia del paciente es requerido.
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <!-- Ends Departamento FormField -->
-
-          <!-- Municipio FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="Municipio"></label>
-              <mat-label>Municipio</mat-label>
-              <input matInput formControlName="Municipio" id="Municipio" type="text"
-                     placeholder="Ingrese el Municipio de residencia del paciente">
-              <mat-error *ngIf="getFormControl('Municipio')?.hasError('required')">
-                * El Municipio de residencia del paciente es requerido.
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <!-- Ends Municipio FormField -->
-
-          <!-- TelefonoCasa FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="TelefonoCasa"></label>
-              <mat-label>Teléfono (casa)</mat-label>
-              <input matInput formControlName="TelefonoCasa" id="TelefonoCasa" type="text"
-                     placeholder="Ingrese el Telefono (casa) del paciente">
-            </mat-form-field>
-          </div>
-          <!-- Ends TelefonoCasa FormField -->
-
-          <!-- TelefonoOficina FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="TelefonoOficina"></label>
-              <mat-label>Teléfono (oficina)</mat-label>
-              <input matInput formControlName="TelefonoOficina" id="TelefonoOficina" type="text"
-                     placeholder="Ingrese el Telefono (oficina) del paciente">
-            </mat-form-field>
-          </div>
-          <!-- Ends TelefonoOficina FormField -->
-
-          <!-- TelefonoCelular FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="TelefonoCelular"></label>
-              <mat-label>Teléfono (celular)</mat-label>
-              <input matInput formControlName="TelefonoCelular" id="TelefonoCelular" type="text"
-                     placeholder="Ingrese el Telefono (celular) del paciente">
-            </mat-form-field>
-          </div>
-          <!-- Ends TelefonoCelular FormField -->
-
-          <!-- Numero de hijos FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="NumeroHijos"></label>
-              <mat-label>Número de hijos</mat-label>
-              <input matInput formControlName="NumeroHijos" id="NumeroHijos" type="number"
-                     placeholder="Ingrese la cantidad de hijos del paciente">
-            </mat-form-field>
-          </div>
-          <!-- Ends Numero de hijos FormField -->
+          <!-- Ends Telefono FormField -->
 
           <!-- Email FormField -->
           <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -225,19 +118,8 @@
           </div>
           <!-- Ends Email FormField -->
 
-          <!-- Fax FormField -->
-          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="Fax"></label>
-              <mat-label>Fax</mat-label>
-              <input matInput formControlName="Fax" id="Fax" type="email"
-                     placeholder="Ingrese Fax del paciente">
-            </mat-form-field>
-          </div>
-          <!-- Ends Fax FormField -->
-
           <!-- DireccionCasa FormField -->
-          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
               <label for="DireccionCasa"></label>
               <mat-label>Direccion de la casa</mat-label>
@@ -246,17 +128,6 @@
             </mat-form-field>
           </div>
           <!-- Ends DireccionCasa FormField -->
-
-          <!-- DireccionTrabajo FormField -->
-          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-            <mat-form-field [appearance]="formFieldAppearance" class="w-100 mt-5" style="max-height: 1rem !important;">
-              <label for="DireccionTrabajo"></label>
-              <mat-label>Direccion del trabajo</mat-label>
-              <textarea matInput formControlName="DireccionTrabajo" id="DireccionTrabajo" type="text"
-                        placeholder="Ingrese la direccion del trabajo del paciente"></textarea>
-            </mat-form-field>
-          </div>
-          <!-- Ends DireccionTrabajo FormField -->
         </div>
       </section>
       <!-- Ends Datos Generales section -->
@@ -285,7 +156,7 @@
         </div>
 
         <!-- A. Agudeza visual table -->
-        <mat-card class="mat-elevation-z8 rounded-lg">
+        <mat-card class="mat-elevation-z0 border rounded-lg overflow-auto">
           <div class="font-weight-bolder">
             A. Agudeza Visual
           </div>
@@ -366,7 +237,7 @@
         <!-- Ends A. Agudeza visual table -->
 
         <!-- B. Refracción table -->
-        <mat-card class="mat-elevation-z8 rounded-lg mt-5">
+        <mat-card class="mat-elevation-z0 border rounded-lg mt-5 overflow-auto">
           <div class="font-weight-bolder">
             B. Refracción
           </div>
@@ -434,7 +305,7 @@
         <!-- Ends B. Refracción table -->
 
         <!-- C. Prescripción table -->
-        <mat-card class="mat-elevation-z8 rounded-lg mt-5">
+        <mat-card class="mat-elevation-z0 border rounded-lg mt-5 overflow-auto">
           <div class="font-weight-bolder">
             C. Prescripción
           </div>

@@ -17,18 +17,20 @@ import {ToastrModule} from 'ngx-toastr';
 
 // Custom Services
 import {AuthService} from './services/auth.service';
+import {GlobalService} from './services/global.service';
 
 // Environment's variables
 import {environment} from '../environments/environment';
 
 // Custom components
 import {LoginViewComponent} from './views/login-view/login-view.component';
-import {GlobalService} from './services/global.service';
+import {PatientsViewComponent} from './views/patients-view/patients-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginViewComponent
+    LoginViewComponent,
+    PatientsViewComponent
   ],
   imports: [
     BrowserModule,

@@ -22,13 +22,13 @@ import {AuthService} from './services/auth.service';
 import {environment} from '../environments/environment';
 
 // Custom components
-import {LoginComponent} from './views/login/login.component';
-import {GlobalService} from "./services/global.service";
+import {LoginViewComponent} from './views/login-view/login-view.component';
+import {GlobalService} from './services/global.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginViewComponent
   ],
   imports: [
     BrowserModule,

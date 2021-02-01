@@ -6,10 +6,10 @@ import {ERROR_TOAST, SUCCESS_TOAST} from '../../consts/ToastConsts';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login-view.component.html',
+  styleUrls: ['./login-view.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginViewComponent implements OnInit {
 
   // Component's variables
   loginForm: FormGroup;
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get(formControlName);
   }
 
-  // Method to do login
+  // Method to do login-view
   async doLogin(): Promise<boolean> {
     if (!this.loginForm.valid) {
       return false;
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
           this.globalService.showToast(SUCCESS_TOAST, 'Inicio de sesión completo', `Bienvenido ${user.user?.displayName}`);
           resolve(true);
         }).catch((error) => {
-          console.error('Error doing login:', error);
+          console.error('Error doing login-view:', error);
           this.globalService.showToast(ERROR_TOAST, 'Inicio de sesión fallido', error.toString());
           this.doingLogin = false;
           rejects(error);

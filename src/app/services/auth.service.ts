@@ -14,14 +14,14 @@ export class AuthService {
   ) {
   }
 
-  // Method to do login
+  // Method to do login-view
   async login(email: string, password: string): Promise<UserCredential> {
     return new Promise(async (resolve, rejects) => {
       await this.auth.signInWithEmailAndPassword(email, password).then(async (user) => {
         await this.setUserToLocalstorage(user);
         resolve(user);
       }).catch((error) => {
-        console.error('Error doing login:', error);
+        console.error('Error doing login-view:', error);
         rejects(error);
       });
     });

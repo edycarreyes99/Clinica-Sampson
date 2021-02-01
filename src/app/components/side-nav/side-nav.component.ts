@@ -40,9 +40,7 @@ export class SideNavComponent implements OnInit {
   ) {
     // en el momento que el componente se construye se manda a llamar a la funcion para extraer la fecha y la hora
     this.extractDateTime();
-  }
 
-  ngOnInit(): void {
     this.router.events.subscribe((events) => {
       if (events instanceof NavigationEnd) {
         console.log('Navigation ended and updated the path');
@@ -58,8 +56,14 @@ export class SideNavComponent implements OnInit {
         console.log('Current children is:', this.route.snapshot.children[0].data.slug);
 
         this.title = this.route.snapshot.children[0].data.slug;
+
+        this.showNavbar = this.title !== 'Login';
+        this.sidenavOpen = this.title !== 'Login';
       }
     });
+  }
+
+  ngOnInit(): void {
   }
 
   // funcion para abrir o cerrar el sidenav

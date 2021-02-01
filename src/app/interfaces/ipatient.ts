@@ -22,19 +22,19 @@ export interface IPatient {
 
   AgudezaVisualOjoDerecho?: number;
   AgudezaVisualOjoIzquierdo?: number;
-  OjoDerechoSinLentes?: number;
-  OjoIzquierdoSinLentes?: number;
-  OjoDerechoConLentes?: number;
-  OjoIzquierdoConLentes?: number;
-  OjoDerechoEstenopeico?: number;
-  OjoIzquierdoEstenopeico?: number;
+  SinLentesOjoDerecho?: number;
+  SinLentesOjoIzquierdo?: number;
+  ConLentesOjoDerecho?: number;
+  ConLentesOjoIzquierdo?: number;
+  EstenopeicoOjoDerecho?: number;
+  EstenopeicoOjoIzquierdo?: number;
 
   RefraccionOjoDerecho?: number;
   RefraccionOjoIzquierdo?: number;
-  OjoDerechoSKDinamica?: number;
-  OjoIzquierdoSKDinamica?: number;
-  OjoDerechoSKCiclopegica?: number;
-  OjoIzquierdoSKCiclopegica?: number;
+  SKDinamicaOjoDerecho?: number;
+  SKDinamicaOjoIzquierdo?: number;
+  SKCiclopegicaOjoDerecho?: number;
+  SKCiclopegicaOjoIzquierdo?: number;
 
   PrescripcionOjoDerecho?: number;
   PrescripcionOjoIzquierdo?: number;
@@ -48,7 +48,10 @@ export interface IPatient {
   ADDOjoIzquierdo?: number;
 
   LamparaDeEndidura?: string;
+
   FondoDeOjo?: string;
+
   PresionIntraOcular?: string;
+
   MotilidadOcular?: string;
 }

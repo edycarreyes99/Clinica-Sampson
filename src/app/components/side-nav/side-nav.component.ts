@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {GlobalService} from '../../services/global.service';
 import {AuthService} from '../../services/auth.service';
@@ -9,7 +9,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss']
 })
-export class SideNavComponent implements OnInit {
+export class SideNavComponent implements OnInit, OnDestroy {
 
   nameToShow = '';
   sidenavOpen = false;
@@ -31,6 +31,8 @@ export class SideNavComponent implements OnInit {
   // variable que determina si mostrar o no el navbar
   showNavbar = true;
 
+  clockInterval = 0;
+
   constructor(
     public afAuth: AngularFireAuth,
     public globalService: GlobalService,
@@ -38,8 +40,6 @@ export class SideNavComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute
   ) {
-    // en el momento que el componente se construye se manda a llamar a la funcion para extraer la fecha y la hora
-    this.extractDateTime();
 
     this.router.events.subscribe((events) => {
       if (events instanceof NavigationEnd) {
@@ -59,12 +59,25 @@ export class SideNavComponent implements OnInit {
 
         this.showNavbar = this.title !== 'Login';
         this.sidenavOpen = this.title !== 'Login';
+
+        if (this.title === 'Login') {
+          clearInterval(this.clockInterval);
+          this.clockInterval = -1;
+        } else {
+          this.extractDateTime();
+        }
       }
     });
   }
 
   ngOnInit(): void {
   }
+
+
+  ngOnDestroy(): void {
+    clearInterval(this.clockInterval);
+  }
+
 
   // funcion para abrir o cerrar el sidenav
   toggleSidenav(): void {
@@ -78,27 +91,16 @@ export class SideNavComponent implements OnInit {
 
   // funcion para extraer la fecha y la hora a cada segundo
   extractDateTime(): void {
-    setInterval(() => {
-      const fechaHora = new Date();
-      if ((fechaHora.getHours() >= 0) && (fechaHora.getHours() <= 12)) {
+    this.clockInterval = setInterval(() => {
+      const date = new Date();
+      if ((date.getHours() >= 0) && (date.getHours() <= 12)) {
         // tslint:disable-next-line:max-line-length
-        this.dateTime = `${this.weekDays[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.months[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours()}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} AM`;
-      } else if (fechaHora.getHours() > 12) {
+        this.dateTime = `${this.weekDays[date.getDay()]} ${date.getDate()} de ${this.months[date.getMonth()]} del ${date.getFullYear()} | ${date.getHours() < 10 ? date.getHours().toString().concat('0', date.getHours().toString()) : date.getHours()}:${date.getMinutes() < 10 ? date.getMinutes().toString().concat('0', date.getMinutes().toString()) : date.getMinutes()}:${date.getSeconds() < 10 ? '0'.concat(date.getSeconds().toString()) : date.getSeconds()} AM`;
+      } else if (date.getHours() > 12) {
         // tslint:disable-next-line:max-line-length
-        this.dateTime = `${this.weekDays[fechaHora.getDay()]} ${fechaHora.getDate()} de ${this.months[fechaHora.getMonth()]} del ${fechaHora.getFullYear()} | ${fechaHora.getHours() - 12}:${fechaHora.getMinutes()}:${fechaHora.getSeconds()} PM`;
+        this.dateTime = `${this.weekDays[date.getDay()]} ${date.getDate()} de ${this.months[date.getMonth()]} del ${date.getFullYear()} | ${(date.getHours() - 12) < 10 ? (date.getHours() - 12).toString().concat('0', (date.getHours() - 12).toString()) : date.getHours() - 12}:${date.getMinutes() < 10 ? date.getMinutes().toString().concat('0', date.getMinutes().toString()) : date.getMinutes()}:${date.getSeconds() < 10 ? '0'.concat(date.getSeconds().toString()) : date.getSeconds()} PM`;
       }
     }, 1000);
-  }
-
-  // Method to logout
-  async logout(): Promise<void> {
-    await this.authService.logout().then(async (status) => {
-      if (status) {
-        await this.globalService.navigate('');
-      }
-    }).catch((error) => {
-      console.log('Error logging out:', error);
-    });
   }
 
 }

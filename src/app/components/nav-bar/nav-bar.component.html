@@ -1,0 +1,10 @@
+<div class="navbar-component">
+  <mat-toolbar class="bg-light">
+    <button class="mr-2" mat-icon-button matTooltip="Abrir/Cerrar SideNav" (click)="toggleSidenav.emit()">
+      <mat-icon class="text-secondary">menu</mat-icon>
+    </button>
+    <span class="text-secondary">{{title}}</span>
+    <span class="ml-auto text-secondary">{{dateTime}}</span>
+    <button mat-flat-button class="bg-light ml-auto text-dark" (click)="logout()">Cerrar Sesión</button>
+  </mat-toolbar>
+</div>

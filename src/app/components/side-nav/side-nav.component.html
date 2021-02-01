@@ -23,20 +23,15 @@
         </a>
         <a matTooltip="Mi cuenta" class="onHover mx-auto" mat-list-item style="text-decoration: none;"
            (click)="navigate('my-account')" routerLinkActive="active">
-          <i matListIcon class="mx-auto text-secondary material-icons" routerLinkActive="active-text">manage_accounts</i>
+          <i matListIcon class="mx-auto text-secondary material-icons"
+             routerLinkActive="active-text">manage_accounts</i>
           <h3 matLine class="text-secondary" routerLinkActive="active-text"> Mi cuenta </h3>
         </a>
       </mat-list>
     </mat-drawer>
     <mat-drawer-content class="example-sidenav-content">
-      <mat-toolbar *ngIf="showNavbar" class="bg-light">
-        <button class="mr-2" mat-icon-button matTooltip="Abrir/Cerrar SideNav" (click)="toggleSidenav()">
-          <mat-icon class="text-secondary">menu</mat-icon>
-        </button>
-        <span class="text-secondary">{{title}}</span>
-        <span class="ml-auto text-secondary">{{dateTime}}</span>
-        <button mat-flat-button class="bg-light ml-auto text-dark" (click)="logout()">Cerrar Sesión</button>
-      </mat-toolbar>
+      <app-nav-bar *ngIf="showNavbar" [title]="title" [dateTime]="dateTime" (toggleSidenav)="toggleSidenav()">
+      </app-nav-bar>
 
       <router-outlet></router-outlet>
     </mat-drawer-content>

@@ -26,13 +26,15 @@ import {environment} from '../environments/environment';
 import {LoginViewComponent} from './views/login-view/login-view.component';
 import {PatientsViewComponent} from './views/patients-view/patients-view.component';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginViewComponent,
     PatientsViewComponent,
-    SideNavComponent
+    SideNavComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,

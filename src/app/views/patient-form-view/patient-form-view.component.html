@@ -32,7 +32,10 @@
             1- Datos Generales
           </div>
           <button class="m-2" mat-stroked-button matTooltip="Guardar el expediente para dicho paciente"
-                  (click)="saveProceeding">Guardar Expediente
+                  (click)="savePatient()" [disabled]="savingPatient">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                  *ngIf="savingPatient"></span>
+            Guardar Expediente
           </button>
         </div>
         <div class="row">

@@ -5,6 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {PATIENTS_DB_REF} from '../../consts/DatabaseConsts';
 import {IPatient} from '../../interfaces/ipatient';
+import {GlobalService} from "../../services/global.service";
+import {ERROR_TOAST, SUCCESS_TOAST} from "../../consts/ToastConsts";
 
 @Component({
   selector: 'app-patient-form-view',
@@ -18,11 +20,14 @@ export class PatientFormViewComponent implements OnInit {
   formFieldAppearance: MatFormFieldAppearance = 'outline';
   tableFormFieldAppearance: MatFormFieldAppearance = 'legacy';
   patientID: string;
+  savingPatient = false;
 
   constructor(
     private route: ActivatedRoute,
-    private fs: AngularFirestore
+    private fs: AngularFirestore,
+    private globalService: GlobalService
   ) {
+    this.patchPatientForm();
     this.route.params.subscribe(async (params) => {
       console.log('Patient params are:', params);
       if (params.patientID) {
@@ -43,6 +48,34 @@ export class PatientFormViewComponent implements OnInit {
   // Method to get the form control value
   getFormControl(formControlName: string): AbstractControl | null {
     return this.patientForm.get(formControlName);
+  }
+
+  // Method to save a patient
+  async savePatient(): Promise<boolean> {
+    if (this.savingPatient) {
+      return false;
+    }
+
+    if (!this.patientForm.valid) {
+      return false;
+    }
+
+    return new Promise(async (resolve, rejects) => {
+      await this.fs.collection(PATIENTS_DB_REF).doc(this.patientForm.get('PatientID').value).set(
+        this.patientForm.value
+      ).then((patientStored) => {
+        console.log('Patient', this.patientForm.get('Nombres'), this.patientForm.get('Apellidos'), 'saved to database correctly !');
+        this.globalService.showToast(SUCCESS_TOAST, 'Paciente guardado correctamente',
+          `El paciente ${this.patientForm.get('Nombres')} ${this.patientForm.get('Apellidos')} se ha guardado correctamente a la base de datos.`);
+        this.savingPatient = false;
+        resolve(true);
+      }).catch((error) => {
+        console.error('Error storing patient to database:', error);
+        this.globalService.showToast(ERROR_TOAST, 'Error al guardar paciente', error.toString());
+        this.savingPatient = false;
+        rejects(false);
+      });
+    });
   }
 
   // Method to patch the values in the patient form

@@ -95,10 +95,10 @@ export class SideNavComponent implements OnInit, OnDestroy {
       const date = new Date();
       if ((date.getHours() >= 0) && (date.getHours() <= 12)) {
         // tslint:disable-next-line:max-line-length
-        this.dateTime = `${this.weekDays[date.getDay()]} ${date.getDate()} de ${this.months[date.getMonth()]} del ${date.getFullYear()} | ${date.getHours() < 10 ? date.getHours().toString().concat('0', date.getHours().toString()) : date.getHours()}:${date.getMinutes() < 10 ? date.getMinutes().toString().concat('0', date.getMinutes().toString()) : date.getMinutes()}:${date.getSeconds() < 10 ? '0'.concat(date.getSeconds().toString()) : date.getSeconds()} AM`;
+        this.dateTime = `${this.weekDays[date.getDay()]} ${date.getDate()} de ${this.months[date.getMonth()]} del ${date.getFullYear()} | ${date.getHours() < 10 ? ''.concat('0', date.getHours().toString()) : date.getHours()}:${date.getMinutes() < 10 ? ''.concat('0', date.getMinutes().toString()) : date.getMinutes()}:${date.getSeconds() < 10 ? '0'.concat(date.getSeconds().toString()) : date.getSeconds()} AM`;
       } else if (date.getHours() > 12) {
         // tslint:disable-next-line:max-line-length
-        this.dateTime = `${this.weekDays[date.getDay()]} ${date.getDate()} de ${this.months[date.getMonth()]} del ${date.getFullYear()} | ${(date.getHours() - 12) < 10 ? (date.getHours() - 12).toString().concat('0', (date.getHours() - 12).toString()) : date.getHours() - 12}:${date.getMinutes() < 10 ? date.getMinutes().toString().concat('0', date.getMinutes().toString()) : date.getMinutes()}:${date.getSeconds() < 10 ? '0'.concat(date.getSeconds().toString()) : date.getSeconds()} PM`;
+        this.dateTime = `${this.weekDays[date.getDay()]} ${date.getDate()} de ${this.months[date.getMonth()]} del ${date.getFullYear()} | ${(date.getHours() - 12) < 10 ? ''.concat('0', (date.getHours() - 12).toString()) : date.getHours() - 12}:${date.getMinutes() < 10 ? ''.concat('0', date.getMinutes().toString()) : date.getMinutes()}:${date.getSeconds() < 10 ? '0'.concat(date.getSeconds().toString()) : date.getSeconds()} PM`;
       }
     }, 1000);
   }

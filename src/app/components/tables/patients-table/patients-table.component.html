@@ -1,0 +1,183 @@
+<div class="patients-table-component">
+  <mat-card class="shadow" id="patients-table">
+    <mat-card-title>
+      <div class="row">
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <mat-form-field style="max-width: 15rem;">
+            <label for="patients-table-search-field"></label>
+            <input matInput type="text" (keyup)="applyFilter($event.target['value'])"
+                   placeholder="Buscar"
+                   [(ngModel)]="searchValue" id="patients-table-search-field">
+            <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Borrar"
+                    (click)="applyFilter(''); searchValue=''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <button mat-button *ngIf="!searchValue" matSuffix mat-icon-button aria-label="Buscar" (click)="null"
+                    disabled>
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4 d-inline">
+          <button class="m-2 float-right" mat-stroked-button matTooltip="Agregar nuevo paciente al archivo"
+                  (click)="openModal('agregar-encuesta')">Agregar Paciente
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <mat-card-content>
+      <table class="table-striped" mat-table [dataSource]="patientTableDataSource" matSort>
+
+        <!-- NumeroExpediente Column -->
+        <ng-container matColumnDef="NumeroExpediente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Número de Expediente</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.NumeroExpediente ? patient.NumeroExpediente : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Nombres Column -->
+        <ng-container matColumnDef="Nombres">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Nombres ? patient.Nombres : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Apellidos Column -->
+        <ng-container matColumnDef="Apellidos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Apellidos ? patient.Apellidos : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="Email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Email</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Email ? patient.Email : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Edad Column -->
+        <ng-container matColumnDef="Edad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Edad</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Edad ? patient.Edad : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Sexo Column -->
+        <ng-container matColumnDef="Sexo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Sexo</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Sexo ? patient.Sexo : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- FechaIngreso Column -->
+        <ng-container matColumnDef="FechaIngreso">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Ingreso</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{globalService.printFirestoreTimestamp(patient.FechaIngreso)}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- TelefonoCasa Column -->
+        <ng-container matColumnDef="TelefonoCasa">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono (casa)</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.TelefonoCasa ? patient.TelefonoCasa : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- TelefonoOficina Column -->
+        <ng-container matColumnDef="TelefonoOficina">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono (oficina)</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.TelefonoOficina ? patient.TelefonoOficina : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- TelefonoCelular Column -->
+        <ng-container matColumnDef="TelefonoCelular">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono (celular)</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.TelefonoCelular ? patient.TelefonoCelular : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Departamento Column -->
+        <ng-container matColumnDef="Departamento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Departamento ? patient.Departamento : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Municipio Column -->
+        <ng-container matColumnDef="Municipio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipio</th>
+          <td mat-cell *matCellDef="let patient">
+            <div class="mr-3">
+              {{patient.Municipio ? patient.Municipio : '-'}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Acciones Column -->
+        <ng-container matColumnDef="Acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones</th>
+          <td mat-cell *matCellDef="let patient; index as i" class="text-center">
+            <div class="example-button-row">
+              <button mat-icon-button matTooltip="Mostrar información de paciente" class="text-primary"
+                      (click)="showPatient(patient.ID)">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+              <button (click)="editPatient(patient.ID)" mat-icon-button matTooltip="Editar Paciente">
+                <mat-icon class="text-warning">edit</mat-icon>
+              </button>
+              <!--<button mat-icon-button matTooltip="Imprimir expediente"
+                      (click)="printProceedings(patient.ID, i, patient.Nombre)">
+                <mat-icon class="text-success">print</mat-icon>
+              </button>-->
+              <button mat-icon-button color="warn" matTooltip="Eliminar Expediente"
+                      (click)="deletePatient(patient.ID)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: tableColumns;">
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

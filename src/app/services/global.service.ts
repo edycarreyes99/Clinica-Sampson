@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {IndividualConfig, ToastrService} from 'ngx-toastr';
 import {ERROR_TOAST, SUCCESS_TOAST} from '../consts/ToastConsts';
 import {Router} from '@angular/router';
+import firebase from 'firebase';
+import {DatePipe} from '@angular/common';
+import Timestamp = firebase.firestore.Timestamp;
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +13,8 @@ export class GlobalService {
 
   constructor(
     private toast: ToastrService,
-    private router: Router
+    private router: Router,
+    private datePipe: DatePipe
   ) {
   }
 
@@ -35,5 +39,10 @@ export class GlobalService {
     return this.router.navigate([`/${ruta}`], {
       queryParams: params ? params : {}
     });
+  }
+
+  printFirestoreTimestamp(timestamp: Timestamp): string {
+    const date: Date = timestamp.toDate();
+    return this.datePipe.transform(date, 'd/M/yyyy', 'UTC-6', 'es-ES').toString();
   }
 }

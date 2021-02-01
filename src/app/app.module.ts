@@ -4,7 +4,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 // Firebase Modules
 import {AngularFireModule} from '@angular/fire';
@@ -25,8 +26,9 @@ import {environment} from '../environments/environment';
 // Custom components
 import {LoginViewComponent} from './views/login-view/login-view.component';
 import {PatientsViewComponent} from './views/patients-view/patients-view.component';
-import { SideNavComponent } from './components/side-nav/side-nav.component';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import {SideNavComponent} from './components/side-nav/side-nav.component';
+import {NavBarComponent} from './components/nav-bar/nav-bar.component';
+import {PatientsTableComponent} from './components/tables/patients-table/patients-table.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     LoginViewComponent,
     PatientsViewComponent,
     SideNavComponent,
-    NavBarComponent
+    NavBarComponent,
+    PatientsTableComponent
   ],
   imports: [
     BrowserModule,
@@ -49,9 +52,11 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     // Firebase modules
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule
   ],
   providers: [
+    DatePipe,
     // Custom services
     AuthService,
     GlobalService

@@ -1,5 +1,22 @@
 <div class="patient-consultations-view">
-  <div class="container-fluid my-5">
+
+  <app-loading *ngIf="loadingConsultations"></app-loading>
+
+  <!-- Consultations empty section -->
+  <div class="d-flex flex-column justify-content-center align-items-center min-h-90-mt-5"
+       *ngIf="patientConsultations.length === 0 && !loadingConsultations">
+    <img src="../../../assets/images/EmptyIllustration.svg" alt="EmptyIllustration" width="400">
+    <div class="span mat-title">
+      El paciente {{patientName}} no tiene ninguna consulta aún. ¡Agregue una dando click en el botón de abajo!.
+    </div>
+    <button mat-stroked-button matTooltip="Agregar una nueva consulta para este paciente"
+            (click)="openConsultationModal()">
+      Agregar consulta
+    </button>
+  </div>
+  <!-- Ends Consultations empty section -->
+
+  <div *ngIf="!loadingConsultations && patientConsultations.length !== 0" class="container-fluid my-5">
 
     <div class="mat-title d-flex justify-content-between align-items-center" *ngIf="patientName">
       <span>Consultas del paciente: {{patientName}}</span>

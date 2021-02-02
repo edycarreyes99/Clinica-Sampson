@@ -23,6 +23,7 @@ export class PatientConsultationsComponent implements OnInit {
   patientConsultations: IConsultation[] = [];
   patientID = '';
   removingConsultation = false;
+  loadingConsultations = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,9 +43,11 @@ export class PatientConsultationsComponent implements OnInit {
             result.where('PatientID', '==', this.patientID).orderBy('FechaConsulta', 'desc'))
           .valueChanges().subscribe((consultations) => {
             this.patientConsultations = consultations;
+            this.loadingConsultations = false;
           }, error => {
             console.error('Error getting consultations for this patient:', error);
             this.globalService.showToast(ERROR_TOAST, 'Error al obtener las consultas para este paciente', error.toString());
+            this.loadingConsultations = false;
           });
       });
     });

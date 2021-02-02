@@ -5,8 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {PATIENTS_DB_REF} from '../../consts/DatabaseConsts';
 import {IPatient} from '../../interfaces/ipatient';
-import {GlobalService} from "../../services/global.service";
-import {ERROR_TOAST, SUCCESS_TOAST} from "../../consts/ToastConsts";
+import {GlobalService} from '../../services/global.service';
+import {ERROR_TOAST, SUCCESS_TOAST} from '../../consts/ToastConsts';
 
 @Component({
   selector: 'app-patient-form-view',
@@ -20,24 +20,29 @@ export class PatientFormViewComponent implements OnInit {
   formFieldAppearance: MatFormFieldAppearance = 'outline';
   tableFormFieldAppearance: MatFormFieldAppearance = 'legacy';
   patientID: string;
-  savingPatient = false;
+  performingPatient = false;
+  loadingPatient = false;
+  removingPatient = false;
 
   constructor(
     private route: ActivatedRoute,
     private fs: AngularFirestore,
-    private globalService: GlobalService
+    public globalService: GlobalService
   ) {
     this.patchPatientForm();
     this.route.params.subscribe(async (params) => {
       console.log('Patient params are:', params);
       if (params.patientID && params.patientID !== 'add') {
+        this.loadingPatient = true;
 
         this.patientID = params.patientID;
 
-        await this.fs.collection(PATIENTS_DB_REF).doc<IPatient>(this.patientID).snapshotChanges().subscribe((patient) => {
-          this.patchPatientForm(patient.payload.data());
+        await this.fs.collection(PATIENTS_DB_REF).doc<IPatient>(this.patientID).get().subscribe((patient) => {
+          this.patchPatientForm(patient.data());
+          this.loadingPatient = false;
         }, error => {
           console.error('Error getting patients from database:', error);
+          this.loadingPatient = false;
         });
       } else {
         this.patchPatientForm();
@@ -53,9 +58,41 @@ export class PatientFormViewComponent implements OnInit {
     return this.patientForm.get(formControlName);
   }
 
+  // Method to remove a patient
+  async removePatient(): Promise<boolean> {
+    if (this.removingPatient) {
+      return false;
+    }
+
+    this.removingPatient = true;
+
+    if (confirm('¿Estas seguro que deseas eliminar este paciente?')) {
+      return new Promise(async (resolve, rejects) => {
+        await this.fs.collection(PATIENTS_DB_REF).doc(this.patientID).delete().then(async (patient) => {
+          this.globalService.navigate('').then((navigate) => {
+            this.globalService.showToast(SUCCESS_TOAST, 'Paciente eliminado correctamente',
+              `El paciente se ha eliminado correctamente.`);
+          });
+          this.removingPatient = false;
+          console.log('Patient removed correctly.');
+          await this.globalService.navigate('');
+          resolve(true);
+        }).catch((error) => {
+          console.error('Error removing patient:', error);
+          this.removingPatient = false;
+          this.globalService.showToast(ERROR_TOAST, 'Error al eliminar el paciente', error.toString());
+          rejects(false);
+        });
+      });
+    } else {
+      this.removingPatient = false;
+      return false;
+    }
+  }
+
   // Method to save a patient
-  async savePatient(): Promise<boolean> {
-    if (this.savingPatient) {
+  async performPatient(): Promise<boolean> {
+    if (this.performingPatient) {
       console.warn('A patient is saving now.');
       return false;
     }
@@ -66,27 +103,29 @@ export class PatientFormViewComponent implements OnInit {
       return false;
     }
 
-    this.savingPatient = true;
+    this.performingPatient = true;
 
-    console.warn('Saving patient');
+    console.warn(`${this.patientID ? 'Updating' : 'Saving'}`, 'patient');
 
     return new Promise(async (resolve, rejects) => {
-
       await this.fs.collection(PATIENTS_DB_REF)
-        .doc(this.patientForm.get('PatientID').value).set(
-          this.patientForm.value
-        ).then((patientStored) => {
-          console.log('Patient', this.patientForm.get('Nombres').value, this.patientForm.get('Apellidos').value, 'saved to database correctly !');
-          this.globalService.showToast(SUCCESS_TOAST, 'Paciente guardado correctamente',
-            `El paciente ${this.patientForm.get('Nombres').value} ${this.patientForm.get('Apellidos').value} se ha guardado correctamente a la base de datos.`);
-          this.savingPatient = false;
-          resolve(true);
-        }).catch((error) => {
-          console.error('Error storing patient to database:', error);
-          this.globalService.showToast(ERROR_TOAST, 'Error al guardar paciente', error.toString());
-          this.savingPatient = false;
-          rejects(false);
-        });
+        .doc(this.patientID ? this.patientID : this.patientForm.get('PatientID').value)[this.patientID ? 'update' : 'set'](
+        this.patientForm.value
+      ).then(async (patientStored) => {
+        console.log('Patient', this.patientForm.get('Nombres').value, this.patientForm.get('Apellidos').value, ` ${this.patientID ? 'updated' : 'stored'} to database correctly !`);
+        this.globalService.showToast(SUCCESS_TOAST, 'Paciente guardado correctamente',
+          `El paciente ${this.patientForm.get('Nombres').value} ${this.patientForm.get('Apellidos').value} se ha ${this.patientID ? 'actualizado' : 'guardado'} correctamente a la base de datos.`);
+        this.performingPatient = false;
+        if (!this.patientID) {
+          await this.globalService.navigate('/patient/' + this.patientForm.get('PatientID').value + '/consultations');
+        }
+        resolve(true);
+      }).catch((error) => {
+        console.error('Error storing patient to database:', error);
+        this.globalService.showToast(ERROR_TOAST, `Error al ${this.patientID ? 'actualizar' : 'guardar'} el paciente`, error.toString());
+        this.performingPatient = false;
+        rejects(false);
+      });
     });
   }
 

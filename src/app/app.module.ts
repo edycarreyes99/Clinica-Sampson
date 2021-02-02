@@ -31,6 +31,8 @@ import {NavBarComponent} from './components/nav-bar/nav-bar.component';
 import {PatientsTableComponent} from './components/tables/patients-table/patients-table.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { PatientFormViewComponent } from './views/patient-form-view/patient-form-view.component';
+import { PatientConsultationsComponent } from './views/patient-consultations/patient-consultations.component';
+import { ConsultationModalComponent } from './components/modals/consultation-modal/consultation-modal.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { PatientFormViewComponent } from './views/patient-form-view/patient-form
     NavBarComponent,
     PatientsTableComponent,
     LoadingComponent,
-    PatientFormViewComponent
+    PatientFormViewComponent,
+    PatientConsultationsComponent,
+    ConsultationModalComponent
   ],
   imports: [
     BrowserModule,

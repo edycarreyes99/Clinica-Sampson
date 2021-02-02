@@ -1,0 +1,55 @@
+<div class="patient-consultations-view">
+  <div class="container-fluid my-5">
+
+    <div class="mat-title d-flex justify-content-between align-items-center" *ngIf="patientName">
+      <span>Consultas del paciente: {{patientName}}</span>
+
+      <button mat-stroked-button matTooltip="Agregar una nueva consulta para este paciente"
+              (click)="openConsultationModal()">
+        Agregar consulta
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-4" *ngFor="let consultation of patientConsultations">
+        <mat-card class="mat-elevation-z0 border rounded-lg overflow-auto"
+                  style="min-height: 22rem!important; max-height: 22rem!important;">
+
+          <mat-card-header class="w-100">
+            <mat-card-title class="mb-0 w-100">
+              Consulta {{consultation.FechaConsulta.toDate() | date: 'd/MM/yyyy'}}
+              <button mat-icon-button [matMenuTriggerFor]="consultationMenu" class="float-right"
+                      style="margin-top: -0.7rem !important;">
+                <mat-icon>expand_more</mat-icon>
+              </button>
+              <mat-menu #consultationMenu="matMenu">
+                <button mat-menu-item (click)="openConsultationModal(consultation)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar consulta</span>
+                </button>
+                <button mat-menu-item (click)="removeConsultation(consultation)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Eliminar consulta</span>
+                </button>
+              </mat-menu>
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="mat-title">S:</div>
+            <div class="mat-body">{{consultation.S ? consultation.S : 'Sin definición.'}}</div>
+
+            <div class="mat-title mt-4">O:</div>
+            <div class="mat-body">{{consultation.O ? consultation.O : 'Sin definición'}}</div>
+
+            <div class="mat-title mt-4">A:</div>
+            <div class="mat-body">{{consultation.A ? consultation.A : 'Sin definición'}}</div>
+
+            <div class="mat-title mt-4">P:</div>
+            <div class="mat-body">{{consultation.P ? consultation.P : 'Sin definición'}}</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

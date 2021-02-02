@@ -5,6 +5,7 @@ import {PatientsViewComponent} from './views/patients-view/patients-view.compone
 import {AuthenticatedGuard} from './guards/authenticated.guard';
 import {NoAuthenticatedGuard} from './guards/no-authenticated.guard';
 import {PatientFormViewComponent} from './views/patient-form-view/patient-form-view.component';
+import {PatientConsultationsComponent} from "./views/patient-consultations/patient-consultations.component";
 
 const routes: Routes = [
   {
@@ -24,15 +25,6 @@ const routes: Routes = [
     canActivate: [AuthenticatedGuard]
   },
   {
-    path: 'patient/:patientID',
-    component: PatientFormViewComponent,
-    data: {
-      slug: 'Nuevo paciente',
-      formType: 'view'
-    },
-    canActivate: [AuthenticatedGuard]
-  },
-  {
     path: 'patient/add',
     component: PatientFormViewComponent,
     data: {
@@ -42,11 +34,19 @@ const routes: Routes = [
     canActivate: [AuthenticatedGuard]
   },
   {
-    path: 'patient/:patientID/edit',
+    path: 'patient/:patientID',
     component: PatientFormViewComponent,
     data: {
-      slug: 'Editar paciente',
-      formType: 'edit'
+      slug: 'Ver paciente',
+      formType: 'view'
+    },
+    canActivate: [AuthenticatedGuard]
+  },
+  {
+    path: 'patient/:patientID/consultations',
+    component: PatientConsultationsComponent,
+    data: {
+      slug: 'Consultas'
     },
     canActivate: [AuthenticatedGuard]
   },

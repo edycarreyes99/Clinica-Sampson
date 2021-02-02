@@ -1,5 +1,10 @@
 <div class="patient-form-view">
-  <div class="container-fluid my-4">
+
+  <app-loading *ngIf="loadingPatient">
+
+  </app-loading>
+
+  <div class="container-fluid my-4" *ngIf="!loadingPatient">
     <!-- Header and titles section -->
     <section id="headerTitlesSection">
       <div class="header">
@@ -31,12 +36,29 @@
           <div class="mat-title mb-0">
             1- Datos Generales
           </div>
-          <button class="m-2" mat-stroked-button matTooltip="Guardar el expediente para dicho paciente"
-                  (click)="savePatient()" [disabled]="savingPatient">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
-                  *ngIf="savingPatient"></span>
-            Guardar Expediente
-          </button>
+          <div class="actions">
+            <button class="m-2" mat-stroked-button
+                    [matTooltip]="patientID ? 'Actualizar el expediente para dicho paciente.' : 'Guardar el expediente para dicho paciente.'"
+                    (click)="performPatient()" [disabled]="performingPatient && !patientForm.valid">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"
+                  *ngIf="performingPatient"></span>
+              <span *ngIf="patientID">Actualizar</span> <span *ngIf="!patientID">Guardar</span> <span> expediente</span>
+            </button>
+
+            <button class="m-2" mat-stroked-button
+                    matTooltip="Ver las consultas de este paciente."
+                    (click)="globalService.navigate('/patient/'+ patientID + '/consultations')" *ngIf="patientID">
+              Ver consultas
+            </button>
+
+            <button class="m-2" mat-stroked-button
+                    matTooltip="Eliminar paciente."
+                    (click)="removePatient()" [disabled]="removingPatient" *ngIf="patientID" color="warn">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"
+                  *ngIf="removingPatient"></span>
+              Eliminar paciente
+            </button>
+          </div>
         </div>
         <div class="row">
           <!-- Numero Expediente FormField -->

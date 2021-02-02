@@ -1,23 +1,23 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {ActivatedRoute} from '@angular/router';
 import {PATIENTS_DB_REF} from '../../../consts/DatabaseConsts';
-import {Patient} from '../../../models/patient/patient';
 import {GlobalService} from '../../../services/global.service';
+import {IPatient} from '../../../interfaces/ipatient';
 
 @Component({
   selector: 'app-patients-table',
   templateUrl: './patients-table.component.html',
   styleUrls: ['./patients-table.component.scss']
 })
-export class PatientsTableComponent implements OnInit {
+export class PatientsTableComponent implements OnInit, AfterViewInit {
 
   // Components variables
   searchValue = '';
-  patientTableDataSource: MatTableDataSource<Patient> = new MatTableDataSource<Patient>([]);
+  patientTableDataSource: MatTableDataSource<IPatient>;
   tableColumns: string[] = [
     'NumeroExpediente',
     'Nombres',
@@ -27,12 +27,12 @@ export class PatientsTableComponent implements OnInit {
     'Telefono',
     'Acciones'
   ];
-  patientsCollection: AngularFirestoreCollection<Patient> = this.fs.collection<Patient>(PATIENTS_DB_REF);
+  patientsCollection: AngularFirestoreCollection<IPatient> = this.fs.collection<IPatient>(PATIENTS_DB_REF);
   loadingPatients = true;
 
   // ViewChild Components
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public route: ActivatedRoute,
@@ -40,18 +40,24 @@ export class PatientsTableComponent implements OnInit {
     public globalService: GlobalService
   ) {
     this.route.params.subscribe(async (params) => {
-      this.patientsCollection = await this.fs.collection<Patient>(PATIENTS_DB_REF);
+      this.patientsCollection = await this.fs.collection<IPatient>(PATIENTS_DB_REF,
+        (result) => result
+          .orderBy('PatientID', 'asc')
+          .orderBy('Nombres', 'asc')
+          .orderBy('Apellidos', 'desc')
+      );
       this.patientsCollection.valueChanges().subscribe((patients) => {
-        this.patientTableDataSource = new MatTableDataSource<Patient>(patients);
-        this.applyFilter('');
+        this.patientTableDataSource = new MatTableDataSource<IPatient>(patients);
+        this.applyFilter(this.searchValue);
         this.loadingPatients = false;
       });
     });
   }
 
   ngOnInit(): void {
-    this.patientTableDataSource.paginator = this.paginator;
-    this.patientTableDataSource.sort = this.sort;
+  }
+
+  ngAfterViewInit(): void {
   }
 
   // Method to search or apply filters to the table
@@ -59,6 +65,10 @@ export class PatientsTableComponent implements OnInit {
     this.patientTableDataSource.filter = searchValue.trim().toLowerCase();
     this.patientTableDataSource.paginator = this.paginator;
     this.patientTableDataSource.sort = this.sort;
+
+    if (this.patientTableDataSource.paginator) {
+      this.patientTableDataSource.paginator.firstPage();
+    }
   }
 
   // Method to open a modal

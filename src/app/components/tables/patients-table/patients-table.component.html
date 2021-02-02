@@ -2,7 +2,7 @@
 
   <!-- Patients table empty section -->
   <div class="d-flex flex-column justify-content-center align-items-center min-h-90-mt-5"
-       *ngIf="patientTableDataSource.data.length === 0 && !loadingPatients">
+       *ngIf="patientTableDataSource?.data.length === 0 && !loadingPatients">
     <img src="../../../../assets/images/EmptyIllustration.svg" alt="EmptyIllustration" width="400">
     <div class="span mat-title">
       Usted aún no tiene ningun paciente. ¡Agregue uno dando click en el botón de abajo!.
@@ -40,7 +40,7 @@
         </div>
       </div>
     </mat-card-title>
-    <mat-card-content>
+    <mat-card-content class="overflow-auto mh-100">
       <table class="table-striped" mat-table [dataSource]="patientTableDataSource" matSort>
 
         <!-- NumeroExpediente Column -->
